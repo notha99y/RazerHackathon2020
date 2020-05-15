@@ -9,4 +9,7 @@ git clone https://github.com/notha99y/RazerHackathon2020.git
 ```bash
 conda env create -f environment.yml
 ```
-
+- activate your conda environment
+```bash
+conda activate RazerHack
+```
