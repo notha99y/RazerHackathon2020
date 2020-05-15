@@ -1,0 +1,1430 @@
+{
+	"info": {
+		"_postman_id": "e57ce96f-1e3a-4c1a-a1bd-2ff124bc794a",
+		"name": "Razer Hackathon",
+		"description": "Template APIs Collection for Razer Hackathon\n\nMambu’s Full API documentation can be found at https://support.mambu.com/docs/rest-apis-overview# (Version 1.0)\nMambu's Self-Service documentation can be found at support.mambu.com\n\nIf you have any questions regarding the API documentation, you may submit your questions in the discord channel #Mambu.\n\n\nFor your convenience, here are some quick links that you might find helpful for the use cases.\n\nhttps://support.mambu.com/docs/document-templates-api\n\nhttps://support.mambu.com/docs/branches-api#get-branches\n\nhttps://support.mambu.com/docs/clients-api#post-clients\n\nhttps://support.mambu.com/docs/custom-fields-api\n\nhttps://support.mambu.com/docs/savings-api#post-savings\n\nhttps://support.mambu.com/docs/linking-a-mambu-internal-id-to-an-external-id\n\nhttps://support.mambu.com/docs/savings-transactions-api#post-transactions\n\nhttps://support.mambu.com/docs/savings-transactions-api#get-transactions\n\nhttps://support.mambu.com/docs/loans-api#post-loans\n\nhttps://support.mambu.com/docs/loan-transactions-api#post-transactions\n\nhttps://support.mambu.com/docs/loan-transactions-api#get-transactions\n\nhttps://support.mambu.com/docs/on-the-fly-filtering-api\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Get ID Document",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/settings/iddocumenttemplates",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"settings",
+						"iddocumenttemplates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.1 Get Transaction Channels",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/transactionchannels\n",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"transactionchannels\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.2 Get Branch ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d98aab7-3b3e-4628-b83c-09685b38f47b",
+						"exec": [
+							"pm.environment.set(\"branchKey\", pm.response.json().encodedKey);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/branches/{{username}}",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"branches",
+						"{{username}}"
+					]
+				},
+				"description": "Branch details based on the provided credentials.\r\n    - a successful response will create a postman environment variable that is referenced in subsequent calls: \r\n`branchKey` = response.body.encodedKey"
+			},
+			"response": []
+		},
+		{
+			"name": "1.3 Create a Client",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5772c7da-0a2f-4442-a559-b9089bee2b49",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ba97844-fceb-4ec8-827f-aa49a2c4a455",
+						"exec": [
+							"pm.environment.set(\"clientId\", pm.response.json().client.encodedKey);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client\": {\n        \"firstName\": \"Celeste\",\n        \"lastName\": \"Goh\",\n        \"preferredLanguage\": \"ENGLISH\",\n        \"notes\": \"Enjoys playing RPG\",\n        \"assignedBranchKey\": {{branchKey}}\n    },\n    \"idDocuments\": [\n        {\n            \"identificationDocumentTemplateKey\": \"8a8e867271bd280c0171bf7e4ec71b01\",\n            \"issuingAuthority\": \"Immigration Authority of Singapore\",\n            \"documentType\": \"NRIC/Passport Number\",\n            \"validUntil\": \"2021-09-12\",\n            \"documentId\": \"S9812345A\"\n        }\n    ],\n    \"addresses\": [],\n    \"customInformation\": [\n    \t{\n    \t\t\"value\":\"Singapore\",\n    \t\t\"customFieldID\":\"countryOfBirth\"\n    \t\t\n    \t},\n    \t{\n    \t\t\"value\": \"{{$guid}}\",\n    \t\t\"customFieldID\":\"razerID\"\n    \t\t\n    \t}\n    \t]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/clients",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"clients"
+					]
+				},
+				"description": "- in order to change client identification details, change the body of the request\r\n    - `branchKey` should be the one set by the `1.2 Get Branch ID` request\r\n- a successful response will create a postman environment variable that is referenced in subsequent calls: `clientId` = response.body.client.encodedKey"
+			},
+			"response": []
+		},
+		{
+			"name": "2. Create Current Account",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2af4d547-3ad0-4db0-9f4e-da9c4df48b02",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1375d086-11fd-41c3-9b26-21cfa8760bd1",
+						"exec": [
+							"if (pm.environment.get(\"accountId\") === undefined)\r",
+							"    pm.environment.set(\"accountId\", pm.response.json().savingsAccount.id);\r",
+							"else\r",
+							"    pm.environment.set(\"additionalSavingsAccount\", pm.response.json().savingsAccount.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"savingsAccount\": {\n        \"name\": \"Digital Account\",\n        \"accountHolderType\": \"CLIENT\",\n        \"accountHolderKey\": {{clientId}},\n        \"accountState\": \"APPROVED\",\n        \"productTypeKey\": \"8a8e878471bf59cf0171bf6979700440\",\n        \"accountType\": \"CURRENT_ACCOUNT\",\n        \"currencyCode\": \"SGD\",\n        \"allowOverdraft\": \"true\",\n        \"overdraftLimit\": \"100\",\n        \"overdraftInterestSettings\": {\n            \"interestRate\": 5\n        },\n            \"interestSettings\": {\n        \"interestRate\": \"1.25\"\n    }\n    }\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings"
+					]
+				},
+				"description": "- the `clientId` in the body should be the one set as part of `1.3 Create a Client`\r\n- the first call sent to this endpoint will set `accountId` = response.body.savingsAccount.id\r\n- all other calls will set and overwrite the variable `additionalSavingsAccount` = response.body.savingsAccount.id\r\n- these variables are used as part of the `2.1 Current Account - Deposit` and `2.2 Current Account - Transfer`"
+			},
+			"response": []
+		},
+		{
+			"name": "2.1 Current Account - Deposit",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 200,\n    \"notes\": \"Deposit into savings account\",\n    \"type\": \"DEPOSIT\",\n    \"method\": \"bank\",\n    \"customInformation\": [\n        {\n            \"value\": \"unique identifier for receipt\",\n            \"customFieldID\": \"IDENTIFIER_TRANSACTION_CHANNEL_I\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{accountId}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{accountId}}",
+						"transactions"
+					]
+				},
+				"description": "uses the `accountId` variable set above"
+			},
+			"response": []
+		},
+		{
+			"name": "2.2 Current Account - Transfer",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\": \"TRANSFER\",\n    \"amount\": \"100\",\n    \"notes\": \"Transfer to Expenses Account\",\n    \"toSavingsAccount\": {{additionalSavingsAccount}},\n    \"method\":\"bank\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{accountId}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{accountId}}",
+						"transactions"
+					]
+				},
+				"description": "- source account is specified as a URL parameter\r\n- destination account is specified as `toSavingsAccount` in the request body\r\n- the collection is set to use the initial `accountId` as a source and the\r\n\r\n*Important: In order for a transfer to be possible, both accounts need to be activated. The accounts can be activated using 2.1 Current Account - Deposit request detailed above*"
+			},
+			"response": []
+		},
+		{
+			"name": "2.3 Get All Transactions for Current Account",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{accountId}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{accountId}}",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.4 Get 1 Transaction by Transaction ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{accountId}}/transactions?offset=0&limit=1",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{accountId}}",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.5 Get Current Account by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{accountId}}/",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{accountId}}",
+						""
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Create a Loan Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb86f7ec-bf6b-40e3-a89c-9f30a96aff15",
+						"exec": [
+							"    pm.environment.set(\"loanAccount\", pm.response.json().loanAccount.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"loanAccount\": {\n        \"accountHolderType\": \"CLIENT\",\n        \"accountHolderKey\": {{clientId}},\n        \"productTypeKey\": \"8a8e867271bd280c0171bf768cc31a89\",\n        \"assignedBranchKey\": {{branchKey}},\n        \"loanName\": \"Student Loan\",\n        \"loanAmount\": 1010,\n        \"interestRate\": \"2\",\n        \"arrearsTolerancePeriod\": \"0\",\n        \"gracePeriod\": \"0\",\n        \"repaymentInstallments\": \"10\",\n        \"repaymentPeriodCount\": \"1\",\n        \"periodicPayment\": \"0\",\n        \"repaymentPeriodUnit\": \"WEEKS\",\n        \"disbursementDetails\": {\n            \"customInformation\": [\n                {\n                    \"value\": \"unique identifier for this transaction\",\n                    \"customFieldID\": \"IDENTIFIER_TRANSACTION_CHANNEL_I\"\n                }\n            ]\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans"
+					]
+				},
+				"description": "create a loan account for the used specified in the request body as `accountHolderKey`\r\n\r\n- an environment variable is set to be used in subsequent calls:  `loanAccount` = response.body.loanAccount.id"
+			},
+			"response": []
+		},
+		{
+			"name": "3.1 Disburse Loan to Savings Account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"DISBURSEMENT\",\n    \"method\":\"bank\",\n    \"customInformation\": [\n        {\n            \"value\": \"unique identifier for transaction\",\n            \"customFieldID\": \"IDENTIFIER_TRANSACTION_CHANNEL_I\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans/{{loanAccount}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans",
+						"{{loanAccount}}",
+						"transactions"
+					]
+				},
+				"description": "Note: an automation workflow should be created to deposit money from the loan account to the current account of the client"
+			},
+			"response": []
+		},
+		{
+			"name": "3.2 Apply fee to Loan Account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"FEE\",\n    \"amount\": \"1000\",\n    \"notes\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans/{{loanAccount}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans",
+						"{{loanAccount}}",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.3 Get All Transactions for Loan Account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans/{{loanAccount}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans",
+						"{{loanAccount}}",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.4 Get Loan Account by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans/{{loanAccount}}/",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans",
+						"{{loanAccount}}",
+						""
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Create Fixed Deposit Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e6b48f1e-4907-4df6-8469-921c202ed876",
+						"exec": [
+							"    pm.environment.set(\"fixedDepositAccount\", pm.response.json().savingsAccount.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"savingsAccount\" : {\n    \"notes\": \"\",\n    \"name\": \"Fixed Deposit Account\",\n    \"accountHolderType\": \"CLIENT\",\n    \"accountHolderKey\": {{clientId}},\n    \"accountState\": \"APPROVED\",\n    \"productTypeKey\": \"8a8e867271bd280c0171bf768b9c1a81\",\n    \"assignedBranchKey\": {{branchKey}},\n    \"accountType\": \"FIXED_DEPOSIT\",\n    \"currencyCode\": \"SGD\",\n    \"interestSettings\": {\n    \t\"interestRate\": \"2\"\n    \t}\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings"
+					]
+				},
+				"description": "sets the `fixedDepositAccount` = response.body.savingsAccount.id variable that is used in subsequent calls"
+			},
+			"response": []
+		},
+		{
+			"name": "4.1 Fixed Deposit Account - Deposit",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 500,\n    \"notes\": \"Deposit into Fixed Deposit account\",\n    \"type\": \"DEPOSIT\",\n    \"method\": \"bank\",\n    \"customInformation\": [\n        {\n            \"value\": \"unique identifier for receipt\",\n            \"customFieldID\": \"IDENTIFIER_TRANSACTION_CHANNEL_I\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{fixedDepositAccount}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{fixedDepositAccount}}",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.2 Start Maturity Date",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\": \"START_MATURITY\",\n  \"valuedate\": \"2020-04-26\",\n  \"notes\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/{{fixedDepositAccount}}/transactions",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"{{fixedDepositAccount}}",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template Client",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "Team00",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "pass1202B5CB58",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/clients/123123?fullDetails=true",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"clients",
+						"123123"
+					],
+					"query": [
+						{
+							"key": "fullDetails",
+							"value": "true"
+						}
+					]
+				},
+				"description": "**Important: Please don't change the authorization credentials and use `Team00` credentials for this call**"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template Current Account",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pass1202B5CB58",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Team00",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/YXPO350?fullDetails=true",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"YXPO350"
+					],
+					"query": [
+						{
+							"key": "fullDetails",
+							"value": "true"
+						}
+					]
+				},
+				"description": "**Important: Please don't change the authorization credentials and use `Team00` credentials for this call**"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template Endowment Plan",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pass1202B5CB58",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Team00",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/savings/STOW698?fullDetails=true",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"savings",
+						"STOW698"
+					],
+					"query": [
+						{
+							"key": "fullDetails",
+							"value": "true"
+						}
+					]
+				},
+				"description": "**Important: Please don't change the authorization credentials and use `Team00` credentials for this call**"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template Loan (Small)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pass1202B5CB58",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Team00",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans/UJXP570?fullDetails=true",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans",
+						"UJXP570"
+					],
+					"query": [
+						{
+							"key": "fullDetails",
+							"value": "true"
+						}
+					]
+				},
+				"description": "**Important: Please don't change the authorization credentials and use `Team00` credentials for this call**"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template SME",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pass1202B5CB58",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Team00",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/groups/548002315?fullDetails=true",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"groups",
+						"548002315"
+					],
+					"query": [
+						{
+							"key": "fullDetails",
+							"value": "true"
+						}
+					]
+				},
+				"description": "**Important: Please don't change the authorization credentials and use `Team00` credentials for this call**"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template Loan (Large)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pass1202B5CB58",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Team00",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://razerhackathon.sandbox.mambu.com/api/loans/TIJI621?fullDetails=true",
+					"protocol": "https",
+					"host": [
+						"razerhackathon",
+						"sandbox",
+						"mambu",
+						"com"
+					],
+					"path": [
+						"api",
+						"loans",
+						"TIJI621"
+					],
+					"query": [
+						{
+							"key": "fullDetails",
+							"value": "true"
+						}
+					]
+				},
+				"description": "**Important: Please don't change the authorization credentials and use `Team00` credentials for this call**"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c2aea09e-b05c-4fd8-9087-754279cc735a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c69aa828-c4c5-446e-975d-0008a4f72b2e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "74446b9a-e7ce-4267-a2dd-2b579f182d19",
+			"key": "username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "1260d95a-3ee2-449c-b39f-ec789791585b",
+			"key": "password",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
