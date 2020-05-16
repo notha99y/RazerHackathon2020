@@ -57,7 +57,7 @@ class MambuAPI:
         self,
         first_name,
         last_name,
-        nirc,
+        nric,
         address,
         country_of_birth,
         razerID='',
@@ -79,7 +79,7 @@ class MambuAPI:
                     "issuingAuthority": "Immigration Authority of Singapore",
                     "documentType": "NRIC/Passport Number",
                     "validUntil": "2021-09-12",
-                    "documentId": nirc,
+                    "documentId": nric,
                 }
             ],
             "addresses": [],
