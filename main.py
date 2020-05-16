@@ -1,11 +1,15 @@
+import requests
 from kivy.config import Config
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
 from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 
+from mambu import MambuAPI
 from models import *
 
 Config.set("graphics", "width", "375")
@@ -13,7 +17,53 @@ Config.set("graphics", "height", "812")
 Config.write()
 
 simple_db = Database()
+mambu_api = MambuAPI()
 # Builder.load_file('main.kv')
+
+
+class PopUpWindow(MDFloatLayout):
+    show_text = ObjectProperty(None)
+
+    def __init__(self, display_text):
+        super(PopUpWindow, self).__init__()
+        self.ids.show_text.text = display_text
+
+
+class SignUpWindow(MDScreen):
+    first_name = ObjectProperty(None)
+    last_name = ObjectProperty(None)
+    nirc = ObjectProperty(None)
+    address = ObjectProperty(None)
+    country_of_birth = ObjectProperty(None)
+    razerID = ObjectProperty(None)
+
+    def signupBtn(self):
+        res = mambu_api.create_client(
+            self.first_name.text,
+            self.last_name.text,
+            self.nirc.text,
+            self.address.text,
+            self.country_of_birth.text,
+            self.razerID.text,
+        )
+
+        if res.status_code == requests.codes.ok or requests.codes.created:
+            content = PopUpWindow(
+                f"Welcome to Razer Bank, {self.first_name.text}!"
+            )
+            popup_win = Popup(
+                title="Success", content=content, size_hint=(0.95, 0.2)
+            )
+            popup_win.open()
+            sm.current = "login"
+        else:
+            self.set_error_message("Sign up fail =(")
+
+    def set_error_message(self, instance_textfield):
+        self.ids.first_name.error = True
+        self.ids.first_name.helper_text = instance_textfield
+
+
 class LoginWindow(MDScreen):
     username = ObjectProperty(None)
     password = ObjectProperty(None)
@@ -25,13 +75,11 @@ class LoginWindow(MDScreen):
             self.reset()
             self.ids.username.error = False
         else:
-            self.set_error_message("Invalid Login")
-
-        
+            self.set_error_message("Invalid Login =(")
 
     def createBtn(self):
         self.reset()
-        sm.current = "create"
+        sm.current = "signup"
 
     def set_error_message(self, instance_textfield):
         self.ids.username.error = True
@@ -40,10 +88,6 @@ class LoginWindow(MDScreen):
     def reset(self):
         self.username.text = ""
         self.password.text = ""
-
-
-class SignUpWindow(MDScreen):
-    pass
 
 
 class HomeWindow(MDScreen):
@@ -93,7 +137,11 @@ class MainApp(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.theme_style = "Dark"
-        screens = [LoginWindow(name="login"), MainWindow(name="main")]
+        screens = [
+            LoginWindow(name="login"),
+            SignUpWindow(name="signup"),
+            MainWindow(name="main"),
+        ]
         for screen in screens:
             sm.add_widget(screen)
 

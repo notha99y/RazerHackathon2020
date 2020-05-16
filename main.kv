@@ -1,6 +1,106 @@
 <MDScreen>:
     radius: [25, 0, 0, 0]
     # md_bg_color: app.theme_cls.primary_color
+
+<PopUpWindow>:
+    show_text: show_text
+    MDLabel:
+        id: show_text
+        text: ""
+        font_size: 16
+        bold: True
+        halign: "center"
+        theme_text_color: 'Secondary'
+        size_hint: 1, 0.2
+        pos_hint: {"x":0, "top":0.5}
+
+<SignUpWindow>:
+    name: "signup"
+
+    first_name: first_name
+    last_name: last_name
+    nirc: nirc
+    address: address
+    country_of_birth: country_of_birth
+    razerID: razerID
+
+    FloatLayout:
+        MDLabel:
+            text: "Let's Get Started"
+            halign: "center"
+            size_hint: 0.5, 0.3
+            multiline: False
+            pos_hint: {"x": 0.25 , "top":1}
+            font_size: 32
+            bold: True
+            theme_text_color: 'Secondary'
+            
+        MDTextField:
+            id: first_name
+            hint_text: 'First Name'
+            multiline: False
+            pos_hint: {"x": 0.05 , "top":0.65}
+            size_hint: 0.45, 0.1
+            required: True
+            helper_text: ''
+            helper_text_mode: "on_error"
+            
+        MDTextField:
+            id: last_name
+            hint_text: 'Last Name'
+            multiline: False
+            pos_hint: {"x": 0.55 , "top":0.65}
+            size_hint: 0.40, 0.1
+            required: True
+            helper_text: ''
+        
+        
+        
+        MDTextField:
+            id: nirc
+            hint_text: 'NIRC'
+            multiline: False
+            pos_hint: {"x": 0.05 , "top":0.55}
+            size_hint: 0.45, 0.1
+            required: True
+            helper_text: ''
+        
+        MDTextField:
+            id: razerID
+            hint_text: 'Razer ID'
+            multiline: False
+            pos_hint: {"x": 0.55 , "top":0.55}
+            size_hint: 0.40, 0.1
+            required: True
+            helper_text: ''
+        
+        MDTextField:
+            id: address
+            hint_text: 'Address'
+            multiline: False
+            pos_hint: {"x": 0.05 , "top":0.45}
+            size_hint: 0.90, 0.1
+            required: True
+            helper_text: ''
+        
+        MDTextField:
+            id: country_of_birth
+            hint_text: 'Country of Birth'
+            multiline: False
+            pos_hint: {"x": 0.05 , "top":0.35}
+            size_hint: 0.90, 0.1
+            required: True
+            helper_text: ''
+        
+        MDRoundFlatButton:
+            pos_hint:{"x":0.05,"top":0.15}
+            size_hint: 0.9, 0.1
+            text: "Sign Up"
+            on_release:
+                root.signupBtn()
+                root.manager.transition.direction = "left"
+
+
 <LoginWindow>:
     name: "login"
 
@@ -15,7 +115,6 @@
         MDTextField:
             id: username
             hint_text: "Username"
-            # font_size: (root.height**2) / 10**4
             multiline: False
             pos_hint: {"x": 0.05 , "top":0.5}
             size_hint: 0.9, 0.1
@@ -25,7 +124,6 @@
 
         MDTextField:
             id: password
-            # font_size: (root.height**2) / 10**4
             hint_text: "Password"
             multiline: False
             required: True
@@ -36,7 +134,6 @@
         MDRoundFlatButton:
             pos_hint:{"x":0.05,"top":0.15}
             size_hint: 0.9, 0.1
-            # font_size: (root.height**2) / 10**4
             text: "Login"
             on_release:
                 root.manager.transition.direction = "left"
@@ -44,7 +141,6 @@
         MDFlatButton:
             pos_hint:{"x":0.85,"top":0.35}
             size_hint: 0.1, 0.1
-            # font_size: (root.height**2) / 10**4
             text: "Sign up"
             text_color: app.theme_cls.primary_color
             on_release:
