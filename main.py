@@ -1,69 +1,85 @@
+from kivy.config import Config
+from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
 from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.screen import MDScreen
 
+from models import *
 
-class LoginWindow(Screen):
-    email = ObjectProperty(None)
+Config.set("graphics", "width", "375")
+Config.set("graphics", "height", "812")
+Config.write()
+
+simple_db = Database()
+# Builder.load_file('main.kv')
+class LoginWindow(MDScreen):
+    username = ObjectProperty(None)
     password = ObjectProperty(None)
 
     def loginBtn(self):
-        # if db.validate(self.email.text, self.password.text):
-        #     MainWindow.current = self.email.text
-        #     self.reset()
-        #     sm.current = "main"
-        # else:
-        #     invalidLogin()
+        if simple_db.validate(self.username.text):
+            sm.current = "main"
+            MainWindow.username = self.username.text
+            self.reset()
+            self.ids.username.error = False
+        else:
+            self.set_error_message("Invalid Login")
 
-        MainWindow.current = self.email.text
-        self.reset()
-        sm.current = "main"
+        
 
     def createBtn(self):
         self.reset()
         sm.current = "create"
 
+    def set_error_message(self, instance_textfield):
+        self.ids.username.error = True
+        self.ids.username.helper_text = instance_textfield
+
     def reset(self):
-        self.email.text = ""
+        self.username.text = ""
         self.password.text = ""
 
 
-class HomeWindow(Screen):
+class SignUpWindow(MDScreen):
     pass
 
 
-class SocialWindow(Screen):
+class HomeWindow(MDScreen):
     pass
 
 
-class PaymentWindow(Screen):
+class SocialWindow(MDScreen):
     pass
 
 
-class AcitivtyWindow(Screen):
+class PaymentWindow(MDScreen):
     pass
 
 
-class MoreWindow(Screen):
+class AcitivtyWindow(MDScreen):
     pass
 
 
-class MainWindow(Screen):
-    n = ObjectProperty(None)
-    created = ObjectProperty(None)
-    email = ObjectProperty(None)
-    current = ""
+class MoreWindow(MDScreen):
+    pass
+
+
+class MainWindow(MDScreen):
+    created_field = ObjectProperty(None)
+    username_field = ObjectProperty(None)
+    # current = ""
 
     def logOut(self):
         sm.current = "login"
 
     def on_enter(self, *args):
         # password, name, created = db.get_user(self.current)
-        name, created = "Ray Ow", "15 May 2020"
-        self.n.text = "Account Name: " + name
-        self.email.text = "Email: " + self.current
-        self.created.text = "Created On: " + created
+        created = "15 May 2020"
+
+        self.username_field.text = "Username: " + self.username
+        self.created_field.text = "Created On: " + created
 
 
 class WindowManager(ScreenManager):
