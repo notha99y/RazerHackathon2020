@@ -13,3 +13,8 @@ conda env create -f environment.yml
 ```bash
 conda activate RazerHack
 ```
+
+## Running the app
+```bash
+python main.py
+```
