@@ -60,7 +60,7 @@ class MambuAPI:
         nirc,
         address,
         country_of_birth,
-        razerID=None,
+        razerID='',
         preferred_lang="ENGLISH",
         notes="Enjoys playing RPG",
     ):
@@ -98,14 +98,17 @@ class MambuAPI:
         res = requests.post(
             url, data=data_str, auth=self.auth, headers=headers
         )
-        mambu_client_id = res.json()["client"]["encodedKey"]
-        client = Client(
-            first_name=first_name,
-            last_name=last_name,
-            mambu_client_id=mambu_client_id,
-        )
-        self.db.add(client)
-        self.db.commit()
+        if res.status_code == requests.codes.ok or requests.codes.created:
+            mambu_client_id = res.json()["client"]["encodedKey"]
+            client = Client(
+                first_name=first_name,
+                last_name=last_name,
+                mambu_client_id=mambu_client_id,
+            )
+            self.db.add(client)
+            self.db.commit()
+        else:
+            print(f'Status code: {res.status_code}')
         return res
 
     def create_current_acc(
