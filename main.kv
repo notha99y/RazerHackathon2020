@@ -1,74 +1,78 @@
+<MDScreen>:
+    radius: [25, 0, 0, 0]
+    # md_bg_color: app.theme_cls.primary_color
 <LoginWindow>:
     name: "login"
 
-    email: email
+    username: username
     password: password
 
     FloatLayout:
-
-        TextInput:
-            id: email
-            hint_text: "Email"
-            font_size: (root.height**2) / 10**4
+        Image:
+            source: 'Razer-logo.png'
+            size_hint: 0.9, 0.5
+            pos_hint: {'x': 0.05, 'top':1}
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            # font_size: (root.height**2) / 10**4
             multiline: False
-            pos_hint: {"x": 0.05 , "top":0.9}
-            size_hint: 0.9, 0.15
+            pos_hint: {"x": 0.05 , "top":0.5}
+            size_hint: 0.9, 0.1
+            required: True
+            helper_text: ''
+            helper_text_mode: 'on_error'
 
-        TextInput:
+        MDTextField:
             id: password
-            font_size: (root.height**2) / 10**4
+            # font_size: (root.height**2) / 10**4
             hint_text: "Password"
             multiline: False
+            required: True
             password: True
-            pos_hint: {"x": 0.05, "top":0.7}
-            size_hint: 0.9, 0.15
+            pos_hint: {"x": 0.05, "top":0.4}
+            size_hint: 0.9, 0.1
 
-        Button:
-            pos_hint:{"x":0.2,"y":0.05}
-            size_hint: 0.6, 0.2
-            font_size: (root.height**2) / 10**4
+        MDRoundFlatButton:
+            pos_hint:{"x":0.05,"top":0.15}
+            size_hint: 0.9, 0.1
+            # font_size: (root.height**2) / 10**4
             text: "Login"
             on_release:
-                root.manager.transition.direction = "down"
+                root.manager.transition.direction = "left"
                 root.loginBtn()
-
-        # Button:
-        #     pos_hint:{"x":0.3,"y":0.3}
-        #     size_hint: 0.4, 0.1
-        #     font_size: (root.height**2) / 10**4
-        #     text: "Don't have an Account? Create One"
-        #     on_release:
-        #         root.manager.transition.direction = "left"
-        #         root.createBtn()
+        MDFlatButton:
+            pos_hint:{"x":0.85,"top":0.35}
+            size_hint: 0.1, 0.1
+            # font_size: (root.height**2) / 10**4
+            text: "Sign up"
+            text_color: app.theme_cls.primary_color
+            on_release:
+                root.manager.transition.direction = "right"
+                root.createBtn()
 <MainWindow>:
     name: "main"
-    n: n
-    email: email
-    created:created
+    username_field: username_field
+    created_field: created_field
 
     FloatLayout:
-        Label:
-            id: n
-            pos_hint:{"x": 0.1, "top":0.9}
-            size_hint:0.8, 0.2
-            text: "Account Name: "
 
         Label:
-            id: email
+            id: username_field
             pos_hint:{"x": 0.1, "top":0.7}
             size_hint:0.8, 0.2
-            text: "Email: "
+            text: "Username: "
 
         Label:
-            id: created
+            id: created_field
             pos_hint:{"x": 0.1, "top":0.5}
             size_hint:0.8, 0.2
             text: "Created: "
 
-        Button:
+        MDRoundFlatButton:
             pos_hint:{"x":0.2, "y": 0.1}
             size_hint:0.6,0.2
             text: "Log Out"
             on_release:
                 app.root.current = "login"
-                root.manager.transition.direction = "down"
+                root.manager.transition.direction = "right"
