@@ -169,27 +169,48 @@
 
 <MainWindow>:
     name: "main"
-    username_field: username_field
-    created_field: created_field
 
     MDFloatLayout:
+        MDLabel:
+            text:'Avaliable Balance'
+            font_size: 16
+            bold: True
+            halign: "center"
+            theme_text_color: 'Secondary'
+            size_hint: 0.5, 0.15
+            pos_hint: {"x":0.25, "top":0.95}
 
-        Label:
-            id: username_field
-            pos_hint:{"x": 0.1, "top":0.7}
-            size_hint:0.8, 0.2
-            text: "Username: "
+        MDLabel:
+            id: balance
+            text: ''
+            font_size: 32
+            bold: True
+            halign: "center"
+            theme_text_color: 'Secondary'
+            size_hint: 0.3, 0.2
+            pos_hint: {"x":0.35, "top":0.75}
 
-        Label:
-            id: created_field
-            pos_hint:{"x": 0.1, "top":0.5}
-            size_hint:0.8, 0.2
-            text: "Created: "
+        # MDRoundFlatButton:
+        #     pos_hint:{"x":0.05, "top": 0.1}
+        #     size_hint:0.9,0.1
+        #     text: "Log Out"
+        #     on_release:
+        #         app.root.current = "login"
+        #         root.manager.transition.direction = "right"
+        
+        MDToolbar:
+            id: top_toolbar
+            title: ''
+            pos_hint: {"top": 1}
+            elevation: 10
+            right_action_items: [["exit-to-app", lambda x: root.logOut()]]
+            
+        MDBottomAppBar:
+            MDToolbar:
+                icon: "git"
+                type: "bottom"
+                left_action_items: [["home", lambda x: root.comeHome()]]
+                right_action_items: [["more", lambda x:root.comeMore()]]
+                on_action_button: root.do_smth()
+                mode: "center"
 
-        MDRoundFlatButton:
-            pos_hint:{"x":0.2, "y": 0.1}
-            size_hint:0.6,0.2
-            text: "Log Out"
-            on_release:
-                app.root.current = "login"
-                root.manager.transition.direction = "right"

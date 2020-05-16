@@ -141,19 +141,44 @@ class MoreWindow(MDScreen):
 
 
 class MainWindow(MDScreen):
-    created_field = ObjectProperty(None)
-    username_field = ObjectProperty(None)
-    # current = ""
+    # created_field = ObjectProperty(None)
+    # username_field = ObjectProperty(None)
+    balance = ObjectProperty(None)
 
     def logOut(self):
         sm.current = "login"
-
+    
+    def comeHome(self):
+        sm.current = 'main'
+    
+    def comeMore(self):
+        sm.current = 'more'
+    def do_smth(self):
+        print('Hi')
     def on_enter(self, *args):
         # password, name, created = db.get_user(self.current)
-        created = "15 May 2020"
+        accounts = simple_db.get_accounts(self.username)
+        if len(accounts) == 0:
+            content = PopUpWindow(
+                f"Welcome {self.username}. Let's Begin by Creating a Saving Account"
+            )
+            popup_win = Popup(
+                title="Create a Saving Account", content=content, size_hint=(0.95, 0.2)
+            )
+            popup_win.open()
+        
+            mambu_api.create_current_acc(simple_db.get_client_id(self.username))
 
-        self.username_field.text = "Username: " + self.username
-        self.created_field.text = "Created On: " + created
+            self.on_enter()
+        elif len(accounts) == 1:
+            res = mambu_api.get_account(accounts[0].mambu_acc_id).json()
+            print(self.username)
+            print('-'*88)
+            self.ids.top_toolbar.title = self.username
+            self.ids.balance.text = '$ ' + res['availableBalance']
+        else:
+            pass
+
 
 
 class WindowManager(ScreenManager):
@@ -161,7 +186,6 @@ class WindowManager(ScreenManager):
 
 
 sm = WindowManager()
-
 
 class MainApp(MDApp):
     def build(self):
@@ -176,7 +200,7 @@ class MainApp(MDApp):
         for screen in screens:
             sm.add_widget(screen)
 
-        sm.current = "more"
+        sm.current = "login"
 
         return sm
 
