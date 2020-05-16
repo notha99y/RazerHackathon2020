@@ -32,7 +32,7 @@ class PopUpWindow(MDFloatLayout):
 class SignUpWindow(MDScreen):
     first_name = ObjectProperty(None)
     last_name = ObjectProperty(None)
-    nirc = ObjectProperty(None)
+    nric = ObjectProperty(None)
     address = ObjectProperty(None)
     country_of_birth = ObjectProperty(None)
     razerID = ObjectProperty(None)
@@ -41,7 +41,7 @@ class SignUpWindow(MDScreen):
         res = mambu_api.create_client(
             self.first_name.text,
             self.last_name.text,
-            self.nirc.text,
+            self.nric.text,
             self.address.text,
             self.country_of_birth.text,
             self.razerID.text,
@@ -60,6 +60,9 @@ class SignUpWindow(MDScreen):
         else:
             self.set_error_message("Sign up fail =(")
 
+    def gobackBtn(self):
+        sm.current = 'login'
+
     def set_error_message(self, instance_textfield):
         content = PopUpWindow(
                 "Sign Up fail =(, Please try again."
@@ -75,7 +78,7 @@ class SignUpWindow(MDScreen):
     def reset(self):
         self.first_name.text = ''
         self.last_name.text = ''
-        self.nirc.text = ''
+        self.nric.text = ''
         self.address.text = ''
         self.country_of_birth.text = ''
         self.razerID.text = ''
@@ -168,11 +171,12 @@ class MainApp(MDApp):
             LoginWindow(name="login"),
             SignUpWindow(name="signup"),
             MainWindow(name="main"),
+            MoreWindow(name="more"),
         ]
         for screen in screens:
             sm.add_widget(screen)
 
-        sm.current = "login"
+        sm.current = "more"
 
         return sm
 

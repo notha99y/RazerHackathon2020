@@ -19,12 +19,12 @@
 
     first_name: first_name
     last_name: last_name
-    nirc: nirc
+    nric: nric
     address: address
     country_of_birth: country_of_birth
     razerID: razerID
 
-    FloatLayout:
+    MDFloatLayout:
         MDLabel:
             text: "Let's Get Started"
             halign: "center"
@@ -54,11 +54,9 @@
             required: True
             helper_text: ''
         
-        
-        
         MDTextField:
-            id: nirc
-            hint_text: 'NIRC'
+            id: nric
+            hint_text: 'NRIC'
             multiline: False
             pos_hint: {"x": 0.05 , "top":0.55}
             size_hint: 0.45, 0.1
@@ -99,7 +97,15 @@
             on_release:
                 root.signupBtn()
                 root.manager.transition.direction = "left"
-
+        
+        MDFlatButton:
+            pos_hint:{"x":0.85,"top":0.25}
+            size_hint: 0.1, 0.1
+            text: "Back"
+            text_color: app.theme_cls.primary_color
+            on_release:
+                root.manager.transition.direction = "left"
+                root.gobackBtn()
 
 <LoginWindow>:
     name: "login"
@@ -107,7 +113,7 @@
     username: username
     password: password
 
-    FloatLayout:
+    MDFloatLayout:
         Image:
             source: 'Razer-logo.png'
             size_hint: 0.9, 0.5
@@ -146,12 +152,27 @@
             on_release:
                 root.manager.transition.direction = "right"
                 root.createBtn()
+<MoreWindow>:
+    name: "more"
+
+    MDFloatLayout:
+        MDLabel:
+            text: "Change Password"
+            font_size: 16
+            bold: True
+            halign: "center"
+            theme_text_color: 'Secondary'
+            size_hint: 0.9, 0.2
+            pos_hint: {"x":0.05, "top":0.95}
+
+    
+
 <MainWindow>:
     name: "main"
     username_field: username_field
     created_field: created_field
 
-    FloatLayout:
+    MDFloatLayout:
 
         Label:
             id: username_field
