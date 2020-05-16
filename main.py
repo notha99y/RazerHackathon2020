@@ -47,7 +47,8 @@ class SignUpWindow(MDScreen):
             self.razerID.text,
         )
 
-        if res.status_code == requests.codes.ok or requests.codes.created:
+        if res.status_code == requests.codes.ok or res.status_code == requests.codes.created:
+            self.reset()
             content = PopUpWindow(
                 f"Welcome to Razer Bank, {self.first_name.text}!"
             )
@@ -60,8 +61,26 @@ class SignUpWindow(MDScreen):
             self.set_error_message("Sign up fail =(")
 
     def set_error_message(self, instance_textfield):
+        content = PopUpWindow(
+                "Sign Up fail =(, Please try again."
+            )
+        popup_win = Popup(
+            title="Fail", content=content, size_hint=(0.95, 0.2)
+        )
+        popup_win.open()
+
         self.ids.first_name.error = True
         self.ids.first_name.helper_text = instance_textfield
+
+    def reset(self):
+        self.first_name.text = ''
+        self.last_name.text = ''
+        self.nirc.text = ''
+        self.address.text = ''
+        self.country_of_birth.text = ''
+        self.razerID.text = ''
+        self.ids.first_name.error = False
+        self.ids.first_name.helper_text = ''    
 
 
 class LoginWindow(MDScreen):
@@ -73,7 +92,6 @@ class LoginWindow(MDScreen):
             sm.current = "main"
             MainWindow.username = self.username.text
             self.reset()
-            self.ids.username.error = False
         else:
             self.set_error_message("Invalid Login =(")
 
@@ -82,12 +100,21 @@ class LoginWindow(MDScreen):
         sm.current = "signup"
 
     def set_error_message(self, instance_textfield):
+        content = PopUpWindow(
+                "Login fail =(, Please try again."
+            )
+        popup_win = Popup(
+            title="Fail", content=content, size_hint=(0.95, 0.2)
+        )
+        popup_win.open()
         self.ids.username.error = True
         self.ids.username.helper_text = instance_textfield
 
     def reset(self):
         self.username.text = ""
         self.password.text = ""
+        self.ids.username.error = False
+        self.ids.username.helper_text = ''
 
 
 class HomeWindow(MDScreen):

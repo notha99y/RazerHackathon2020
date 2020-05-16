@@ -98,7 +98,7 @@ class MambuAPI:
         res = requests.post(
             url, data=data_str, auth=self.auth, headers=headers
         )
-        if res.status_code == requests.codes.ok or requests.codes.created:
+        if res.status_code == requests.codes.ok or res.status_code == requests.codes.created:
             mambu_client_id = res.json()["client"]["encodedKey"]
             client = Client(
                 first_name=first_name,
