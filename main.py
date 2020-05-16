@@ -8,8 +8,14 @@ from kivymd.app import MDApp
 from kivymd.icon_definitions import md_icons
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.list import IconLeftWidget, TwoLineIconListItem
+from kivymd.uix.list import (
+    IconLeftWidget,
+    IRightBodyTouch,
+    OneLineAvatarIconListItem,
+    TwoLineIconListItem,
+)
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.selectioncontrol import MDCheckbox
 
 from mambu import MambuAPI
 from models import *
@@ -22,6 +28,25 @@ simple_db = Database()
 mambu_api = MambuAPI()
 # Builder.load_file('main.kv')
 icons = list(md_icons.keys())
+
+
+class ListItemWithCheckbox(OneLineAvatarIconListItem):
+    """Custom list item."""
+
+    icon = StringProperty("android")
+
+
+class RightCheckbox(IRightBodyTouch, MDCheckbox):
+    """Custom right container."""
+
+    # count_id = ObjectProperty(None)
+
+    # def __init__(self, count_id):
+    #     super(RightCheckbox, self).__init__()
+
+
+class ItemDrawer(TwoLineIconListItem):
+    icon = StringProperty()
 
 
 class PopUpWindow(MDFloatLayout):
@@ -41,6 +66,96 @@ class PopTopUpWindow(MDFloatLayout):
 
     def on_enter(self):
         mambu_api.deposit(self.account_id, self.topup_amount.text)
+
+
+class PopAccountsWindows(MDFloatLayout):
+    selected_account_id = ObjectProperty(None)
+    def __init__(self, username):
+        super(PopAccountsWindows, self).__init__()
+        self.username = username
+        self.accounts = simple_db.get_accounts(username)
+        for account in self.accounts:
+            self.ids.scroll.add_widget(
+                ListItemWithCheckbox(
+                        text="Account No: " + str(account.id) + " Owner:" + self.username,
+                        icon="account",
+                    )
+            )
+    def on_enter(self):
+        widgets = list(self.ids.scroll.walk())
+        cut_idx = 0
+        for i, widget in enumerate(widgets):
+            try:
+                if widget.state == "down":
+                    cut_idx = i
+            except:
+                continue
+        account_no = ''
+        for widget in widgets[:cut_idx]:
+            try:
+                if 'Account No: ' in widget.text:
+                    account_no = widget.text[len('Account No: ')]
+
+            except:
+                continue
+        sm.current = 'login'
+        sm.current = 'main'
+        screens[2].selected_account_id = account_no
+
+class PopCollaborateWindow(MDFloatLayout):
+    secondary_client_name = ObjectProperty(None)
+
+    def __init__(self, account_id, username):
+        super(PopCollaborateWindow, self).__init__()
+        self.account_id = account_id
+        self.account = (
+            db.query(Account)
+            .filter(Account.mambu_acc_id == self.account_id)
+            .all()[0]
+        )
+        clients = db.query(Client).all()
+        self.client_names = [
+            client.first_name + " " + client.last_name for client in clients
+        ]
+        for client in clients:
+            if client.first_name != username:
+                self.ids.scroll.add_widget(
+                    ListItemWithCheckbox(
+                        text=client.first_name + " " + client.last_name,
+                        icon="account",
+                    )
+                )
+
+    def on_enter(self):
+        widgets = list(self.ids.scroll.walk())
+        cut_idx = 0
+        for i, widget in enumerate(widgets):
+            try:
+                if widget.state == "down":
+                    cut_idx = i
+            except:
+                continue
+        secondary_client_name = ""
+        for widget in widgets[:cut_idx]:
+            try:
+                if widget.text in self.client_names:
+                    secondary_client_name = widget.text
+            except:
+                continue
+        _secondary_client_name_first_name = secondary_client_name.split(" ")[
+            :-1
+        ]
+        secondary_client_name_first_name = ""
+        for name in _secondary_client_name_first_name:
+            secondary_client_name_first_name += name + " "
+
+        secondary_client_id = (
+            db.query(Client)
+            .filter(Client.first_name == secondary_client_name_first_name[:-1])
+            .all()[0]
+            .id
+        )
+        self.account.update_secondary_client_id(secondary_client_id)
 
 
 class SignUpWindow(MDScreen):
@@ -67,7 +182,7 @@ class SignUpWindow(MDScreen):
         ):
             self.reset()
             content = PopUpWindow(
-                f"Welcome to Razer Bank, {self.first_name.text}!"
+                f"Welcome to Razer Bank!"
             )
             popup_win = Popup(
                 title="Success", content=content, size_hint=(0.95, 0.2)
@@ -159,18 +274,21 @@ class MoreWindow(MDScreen):
         sm.current = "more"
 
 
-class ItemDrawer(TwoLineIconListItem):
-    icon = StringProperty()
-
-
 class MainWindow(MDScreen):
-    # created_field = ObjectProperty(None)
-    # username_field = ObjectProperty(None)
+    def __init__(self, name, selected_account_id):
+        super(MainWindow, self).__init__()
+        self.selected_account_id = selected_account_id
+        print('in init')
+        print(self.selected_account_id)
+    
     balance = ObjectProperty(None)
 
     def logOut(self):
         sm.current = "login"
-
+        self.ids.balance.text = "$ 0"
+        self.ids.list_container.clear_widgets()
+        self.ids.collaborator.text = ''
+        self.selected_account_id = None
     def comeHome(self):
         sm.current = "main"
         self.on_enter()
@@ -179,7 +297,18 @@ class MainWindow(MDScreen):
         sm.current = "more"
         MoreWindow.username = self.username
 
+    def collaborateBtn(self):
+        content = PopCollaborateWindow(self.account_id, self.username)
+        popup_win = Popup(
+            title="Collaborate with a Friend",
+            content=content,
+            size_hint=(0.95, 0.95),
+        )
+        popup_win.open()
+        content.account_id = self.account_id
+
     def topUp(self):
+        self.on_enter()
         content = PopTopUpWindow(self.account_id)
         popup_win = Popup(
             title="Top up", content=content, size_hint=(0.95, 0.8)
@@ -187,11 +316,14 @@ class MainWindow(MDScreen):
         popup_win.open()
 
     def on_enter(self):
-        # password, name, created = db.get_user(self.current)
         self.ids.balance.text = "$ 0"
         self.ids.list_container.clear_widgets()
-
+        self.ids.collaborator.text = ''
         accounts = simple_db.get_accounts(self.username)
+        print(self.selected_account_id)
+        print(self.username)
+        if self.selected_account_id:
+            accounts = db.query(Account).filter(Account.id ==self.selected_account_id).all()
         if len(accounts) == 0:
             content = PopUpWindow(
                 f"Welcome {self.username}. Let's Begin by Creating a Saving Account"
@@ -208,39 +340,64 @@ class MainWindow(MDScreen):
             )
 
         elif len(accounts) == 1:
-            # Assign account id
-            self.account_id = accounts[0].mambu_acc_id
-            # Get account details from mambu
-            res = mambu_api.get_account(self.account_id).json()
-            # Assign username to frontend
-            self.ids.top_toolbar.title = self.username
-            # Assign available balance to the frontend
-            self.ids.balance.text = "$ " + res["availableBalance"]
-
-            # Get transactions
-            res = mambu_api.get_all_transactions(self.account_id).json()
-            if len(res) > 0:
-                for transaction in res:
-                    entry_date = transaction["entryDate"]
-                    amount = transaction["amount"]
-                    trans_type = transaction["type"]
-
-                    if trans_type == "DEPOSIT":
-                        icon = "cash"
-
-                    else:
-                        icon = "credit-card"
-
-                    self.ids.list_container.add_widget(
-                        ItemDrawer(
-                            text=f"Amount: ${amount}",
-                            secondary_text=f"Trans Date: {entry_date}",
-                            icon="cash",
-                        )
-                    )
-
+            self.populate_enter(accounts)
         else:
-            pass
+            
+            content = PopAccountsWindows(
+                self.username
+            )
+            popup_win = Popup(
+                title="Select your account",
+                content=content,
+                size_hint=(0.95, 0.95),
+            )
+            popup_win.open()
+
+    def populate_enter(self, accounts):
+        self.collaborator_id = accounts[0].secondary_client_id
+        self.first_user_id = accounts[0].client_id
+        # Assign account id
+        self.account_id = accounts[0].mambu_acc_id
+        # Get account details from mambu
+        res = mambu_api.get_account(self.account_id).json()
+        # Assign username to frontend
+        self.ids.top_toolbar.title = self.username
+        # Assign available balance to the frontend
+        self.ids.balance.text = "$ " + res["availableBalance"]
+        # Assign Collaborator in MDlabel
+        if self.collaborator_id:
+            collaborator_name = (
+                db.query(Client)
+                .filter(Client.id == self.collaborator_id)
+                .all()[0]
+                .first_name
+            )
+            first_username = db.query(Client).get(self.first_user_id).first_name
+            self.ids.collaborator.text = (
+                f"{first_username} sharing with {collaborator_name}"
+            )
+
+        # Get transactions
+        res = mambu_api.get_all_transactions(self.account_id).json()
+        if len(res) > 0:
+            for transaction in res:
+                entry_date = transaction["entryDate"]
+                amount = transaction["amount"]
+                trans_type = transaction["type"]
+
+                if trans_type == "DEPOSIT":
+                    icon = "cash"
+
+                else:
+                    icon = "credit-card"
+
+                self.ids.list_container.add_widget(
+                    ItemDrawer(
+                        text=f"Amount: ${amount}",
+                        secondary_text=f"Trans Date: {entry_date}",
+                        icon="cash",
+                    )
+                )
 
 
 class WindowManager(ScreenManager):
@@ -252,12 +409,14 @@ sm = WindowManager()
 
 class MainApp(MDApp):
     def build(self):
+        global screens
+
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.theme_style = "Dark"
         screens = [
             LoginWindow(name="login"),
             SignUpWindow(name="signup"),
-            MainWindow(name="main"),
+            MainWindow(name="main", selected_account_id = None),
             MoreWindow(name="more"),
         ]
         for screen in screens:

@@ -2,6 +2,14 @@
     radius: [25, 0, 0, 0]
     # md_bg_color: app.theme_cls.primary_color
 
+<ListItemWithCheckbox>:
+    IconLeftWidget:
+        icon: root.icon
+
+    RightCheckbox:
+        # count_id: count_id
+
+
 <PopUpWindow>:
     show_text: show_text
     MDLabel:
@@ -30,8 +38,33 @@
         text: "Top Up"
         on_release:
             root.on_enter()
+<PopAccountsWindows>:
+    BoxLayout:
+        ScrollView:
+            MDList:
+                id: scroll
+
+    MDRoundFlatButton:
+        pos_hint:{"x":0.05,"top":0.15}
+        size_hint: 0.9, 0.1
+        text: "Continue"
+        on_release:
+            root.on_enter()
 
 
+<PopCollaborateWindow>:
+    BoxLayout:
+        ScrollView:
+            MDList:
+                id: scroll
+
+    MDRoundFlatButton:
+        pos_hint:{"x":0.05,"top":0.15}
+        size_hint: 0.9, 0.1
+        text: "Collaborate!"
+        on_release:
+            root.on_enter()
+            
 <SignUpWindow>:
     name: "signup"
 
@@ -224,6 +257,13 @@
     name: "main"
     list_container: list_container
     MDFloatLayout:
+        MDRoundFlatButton:
+            pos_hint:{"x":0.05,"top":0.85}
+            size_hint: 0.25, 0.1
+            text: "Collaborate!"
+            on_release:
+                root.collaborateBtn()
+                root.manager.transition.direction = "left"
         MDLabel:
             text:'Avaliable Balance'
             font_size: 16
@@ -232,6 +272,17 @@
             theme_text_color: 'Secondary'
             size_hint: 0.5, 0.15
             pos_hint: {"x":0.25, "top":0.95}
+        
+        MDLabel:
+            id: collaborator
+            text: ''
+            font_size: 12
+            bold: True
+            halign: "center"
+            theme_text_color: 'Secondary'
+            size_hint: 0.5, 0.15
+            pos_hint: {"x":0.05, "top":0.75}
+        
 
         MDLabel:
             id: balance
@@ -256,6 +307,7 @@
             pos_hint: {"top": 1}
             elevation: 10
             right_action_items: [["exit-to-app", lambda x: root.logOut()]]
+            
             
         MDBottomAppBar:
             MDToolbar:
