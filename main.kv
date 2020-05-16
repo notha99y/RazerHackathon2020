@@ -14,6 +14,24 @@
         size_hint: 1, 0.2
         pos_hint: {"x":0, "top":0.5}
 
+<PopTopUpWindow>:
+    topup_amount: topup_amount
+    MDTextField:
+        id: topup_amount
+        hint_text: 'Top up Amount'
+        multiline: False
+        pos_hint: {"x": 0.05 , "top":0.65}
+        size_hint: 0.45, 0.1
+        required: True
+
+    MDRoundFlatButton:
+        pos_hint:{"x":0.05,"top":0.15}
+        size_hint: 0.9, 0.1
+        text: "Top Up"
+        on_release:
+            root.on_enter()
+
+
 <SignUpWindow>:
     name: "signup"
 
@@ -156,20 +174,55 @@
     name: "more"
 
     MDFloatLayout:
-        MDLabel:
-            text: "Change Password"
-            font_size: 16
-            bold: True
-            halign: "center"
-            theme_text_color: 'Secondary'
-            size_hint: 0.9, 0.2
-            pos_hint: {"x":0.05, "top":0.95}
-
+        BoxLayout:
+            MDList:
+                pos_hint:{"x":0.05,"top":0.75}
+                OneLineListItem:
+                    text: "Updates and Notices"
+                OneLineListItem:
+                    text: "Membership Tiers and Benefits"
+                OneLineListItem:
+                    text: "Refer a Friend Or Family"
+                OneLineListItem:
+                    text: ""
+                OneLineListItem:
+                    text: "Security Settings"
+                OneLineListItem:
+                    text: "App Settings"
+                OneLineListItem:
+                    text: ""
+                OneLineListItem:
+                    text: "Privacy Policy"
+                OneLineListItem:
+                    text: "Terms and Conditions"
+                OneLineListItem:
+                    text: "Contact Us"
     
+        MDToolbar:
+            id: top_toolbar
+            title: ''
+            pos_hint: {"top": 1}
+            elevation: 10
+            right_action_items: [["exit-to-app", lambda x: root.logOut()]]
+        MDBottomAppBar:
+            MDToolbar:
+                icon: "cash-multiple"
+                type: "bottom"
+                left_action_items: [["home", lambda x: root.comeHome()]]
+                right_action_items: [["account", lambda x:root.comeMore()]]
+                on_action_button: root.topUp()
+                mode: "center"
+
+<ItemDrawer>:
+    # text: "Two-line item with avatar"
+    # secondary_text: "Secondary text here"
+    IconLeftWidget:
+        id: icon
+        icon: root.icon    
 
 <MainWindow>:
     name: "main"
-
+    list_container: list_container
     MDFloatLayout:
         MDLabel:
             text:'Avaliable Balance'
@@ -188,16 +241,15 @@
             halign: "center"
             theme_text_color: 'Secondary'
             size_hint: 0.3, 0.2
-            pos_hint: {"x":0.35, "top":0.75}
-
-        # MDRoundFlatButton:
-        #     pos_hint:{"x":0.05, "top": 0.1}
-        #     size_hint:0.9,0.1
-        #     text: "Log Out"
-        #     on_release:
-        #         app.root.current = "login"
-        #         root.manager.transition.direction = "right"
+            pos_hint: {"x":0.35, "top":0.85}
         
+        BoxLayout:
+            size_hint: 1, 0.45
+            pos_hint: {"x":0, "top":0.65}
+            ScrollView:
+                MDList:
+                    id: list_container
+                    
         MDToolbar:
             id: top_toolbar
             title: ''
@@ -207,10 +259,10 @@
             
         MDBottomAppBar:
             MDToolbar:
-                icon: "git"
+                icon: "cash-multiple"
                 type: "bottom"
                 left_action_items: [["home", lambda x: root.comeHome()]]
-                right_action_items: [["more", lambda x:root.comeMore()]]
-                on_action_button: root.do_smth()
+                right_action_items: [["account", lambda x:root.comeMore()]]
+                on_action_button: root.topUp()
                 mode: "center"
 
