@@ -18,3 +18,6 @@ conda activate RazerHack
 ```bash
 python main.py
 ```
+
+## Icons
+https://gitlab.com/kivymd/KivyMD/blob/master/kivymd/icon_definitions.py
