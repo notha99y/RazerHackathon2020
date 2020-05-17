@@ -20,10 +20,10 @@ python main.py
 ```
 
 ## Screenshots
-![login][./pictures/login.png]
-![signup][./pictures/signup.png]
-![account][./pictures/account.png]
-![others][./pictures/others.png]
+![login](./pictures/login.png)
+![signup](./pictures/signup.png)
+![account](./pictures/account.png)
+![others](./pictures/others.png)
 
 ## Icons
 https://gitlab.com/kivymd/KivyMD/blob/master/kivymd/icon_definitions.py
