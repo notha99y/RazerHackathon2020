@@ -1,6 +1,5 @@
 import datetime
 import json
-import os
 from pathlib import Path
 
 import requests
@@ -30,7 +29,7 @@ class MambuAPI:
         with open(self.postman_collection_fp, "r") as f:
             self.api_collections = json.load(f)
 
-        self.auth = ("Team33", "pass10D1917C11")
+        self.auth = (MAMBU_AUTH_USER, MAMBU_AUTH_PW)
         self.username = "team33"
         _res_branch_id = self.get_branch_id().json()
         self.branch_id = _res_branch_id["encodedKey"]
@@ -60,7 +59,7 @@ class MambuAPI:
         nric,
         address,
         country_of_birth,
-        razerID='',
+        razerID="",
         preferred_lang="ENGLISH",
         notes="Enjoys playing RPG",
     ):
@@ -98,7 +97,10 @@ class MambuAPI:
         res = requests.post(
             url, data=data_str, auth=self.auth, headers=headers
         )
-        if res.status_code == requests.codes.ok or res.status_code == requests.codes.created:
+        if (
+            res.status_code == requests.codes.ok
+            or res.status_code == requests.codes.created
+        ):
             mambu_client_id = res.json()["client"]["encodedKey"]
             client = Client(
                 first_name=first_name,
@@ -108,7 +110,7 @@ class MambuAPI:
             self.db.add(client)
             self.db.commit()
         else:
-            print(f'Status code: {res.status_code}')
+            print(f"Status code: {res.status_code}")
         return res
 
     def create_current_acc(

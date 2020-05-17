@@ -278,8 +278,6 @@ class MainWindow(MDScreen):
     def __init__(self, name, selected_account_id):
         super(MainWindow, self).__init__()
         self.selected_account_id = selected_account_id
-        print('in init')
-        print(self.selected_account_id)
     
     balance = ObjectProperty(None)
 
@@ -320,8 +318,6 @@ class MainWindow(MDScreen):
         self.ids.list_container.clear_widgets()
         self.ids.collaborator.text = ''
         accounts = simple_db.get_accounts(self.username)
-        print(self.selected_account_id)
-        print(self.username)
         if self.selected_account_id:
             accounts = db.query(Account).filter(Account.id ==self.selected_account_id).all()
         if len(accounts) == 0:
